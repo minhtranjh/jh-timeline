@@ -1,67 +1,52 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import data from "../data/data";
 export const MembersContext = React.createContext();
-class MembersProvider extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      listMembers: [],
-      totalPages: 0,
-      pagedList: [],
-      currentPage: 1,
-    };
-    this.handlePagingListMember = this.handlePagingListMember.bind(this);
-    this.findMemberById = this.findMemberById.bind(this);
-  }
-  componentDidMount() {
-    this.fetchListMember();
-  }
-  fetchListMember() {
+function MembersProvider({ children }) {
+  const [listMembers, setListMembers] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pagedList, setPagedList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    fetchListMember();
+  }, []);
+  function fetchListMember() {
     const newData = data.sort((a, b) => {
-      return (new Date(a.joinedDate) - new Date(b.joinedDate));
+      return new Date(a.joinedDate) - new Date(b.joinedDate);
     });
     const pagedList = newData.slice(0, 5);
-    this.setState({
-      listMembers: newData,
-      totalPages : 10,
-      // totalPage: Math.floor(newData.length / 5) + 1,
-      pagedList,
-    });
+    setListMembers(newData);
+    setTotalPages(10);
+    setPagedList(pagedList);
   }
-  handlePagingListMember(page) {
-    const newList = this.state.listMembers;
+  function handlePagingListMember(page) {
+    const newList = listMembers;
     const pagedList = newList.slice((page - 1) * 5, 5 * page);
-    this.setState({ currentPage: page, pagedList });
+    setCurrentPage(page);
+    setPagedList(pagedList);
   }
-  findMemberById(id) {
+  function findMemberById(id) {
     let user;
-    this.state.listMembers.forEach((item) => {
+    listMembers.forEach((item) => {
       if (item.id === id) {
         user = item;
       }
     });
     return user;
   }
-  getAllMembers() {
-    return this.state.listMembers;
-  }
-  render() {
-    const { totalPages, currentPage, listMembers, pagedList } = this.state;
-    return (
-      <MembersContext.Provider
-        value={{
-          totalPages,
-          currentPage,
-          listMembers,
-          pagedList,
-          findMemberById: this.findMemberById,
-          handlePagingListMember: this.handlePagingListMember,
-        }}
-      >
-        {this.props.children}
-      </MembersContext.Provider>
-    );
-  }
+  return (
+    <MembersContext.Provider
+      value={{
+        totalPages,
+        currentPage,
+        listMembers,
+        pagedList,
+        findMemberById: findMemberById,
+        handlePagingListMember: handlePagingListMember,
+      }}
+    >
+      {children}
+    </MembersContext.Provider>
+  );
 }
 
 export default MembersProvider;

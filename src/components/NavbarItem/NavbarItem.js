@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import "./NavbarItem.css"
-class NavbarItem extends Component {
-  render() {
-    const { path, label,onClick } = this.props;
-    return (
-      <li className="nav-item">
-        <NavLink onClick={onClick} className="nav-link" to={path}>
-          {label}
-        </NavLink>
-      </li>
-    );
-  }
+import "./NavbarItem.css";
+function NavbarItem({ path, label, onClick }) {
+  return (
+    <li className="nav-item">
+      <NavLink onClick={onClick} className="nav-link" to={path}>
+        {label}
+      </NavLink>
+    </li>
+  );
 }
 
 export default NavbarItem;

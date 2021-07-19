@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React, {  } from "react";
 
-class MemberDetailInfoBox extends Component {
-  render() {
-    const { memberDetails } = this.props;
+function MemberDetailInfoBox ({memberDetails}) {
     return (
       <div className="detail-box">
         <div className="detail-section">
@@ -43,7 +41,6 @@ class MemberDetailInfoBox extends Component {
         </div>
       </div>
     );
-  }
 }
 
 export default MemberDetailInfoBox;

@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React, {  } from "react";
 import NavbarItem from "../NavbarItem/NavbarItem";
-class NavbarList extends Component {
-  render() {
-      const {handleToggleMenu} = this.props
+function NavbarList({handleToggleMenu}) {
     return (
       <ul className="nav-list">
         <NavbarItem onClick={handleToggleMenu} path="/" label="Home" />
@@ -11,7 +9,6 @@ class NavbarList extends Component {
         <NavbarItem onClick={handleToggleMenu} path="/contact" label="About" />
       </ul>
     );
-  }
 }
 
 export default NavbarList;

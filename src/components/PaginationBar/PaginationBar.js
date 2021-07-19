@@ -1,42 +1,39 @@
-import React, { Component } from "react";
+import React, {  useEffect, useState } from "react";
 import "./PaginationBar.css";
-class PaginationBar extends Component {
-  state = {
-    listLiTag: [],
-  };
-  componentDidMount() {
-    this.pagingListMember();
-  }
-  pagingListMember(currentPage = this.props.currentPage) {
-    this.props.handlePagingListMember(currentPage);
-    this.renderListPageNumber(currentPage);
+function PaginationBar({ currentPage, handlePagingListMember, totalPages }) {
+  const [listLiTags, setListLiTags] = useState([]);
+  useEffect(() => {
+    pagingListMember();
+  }, []);
+  function pagingListMember(page = currentPage) {
+    handlePagingListMember(page);
+    renderListPageNumber(page);
   }
 
-  renderListPageNumber(currentPage) {
-    const { totalPages } = this.props;
+  function renderListPageNumber(page) {
     let listLiTag = [];
-    let beforeCurrentPage = currentPage - 1;
-    let afterCurrentPage = currentPage + 1;
-    if (currentPage > 1) {
-      const prevButton = this.createPagingPrevButton(currentPage);
+    let beforeCurrentPage = page - 1;
+    let afterCurrentPage = page + 1;
+    if (page > 1) {
+      const prevButton = createPagingPrevButton(page);
       listLiTag.push(prevButton);
     }
-    if (currentPage > 2) {
-      const pageNumber = this.createPageNumber(1);
+    if (page > 2) {
+      const pageNumber = createPageNumber(1);
       listLiTag.push(pageNumber);
     }
-    if (currentPage > 3) {
-      const dots = this.createPagingDot("dot-r");
+    if (page > 3) {
+      const dots = createPagingDot("dot-r");
       listLiTag.push(dots);
     }
-    if (currentPage === totalPages) {
+    if (page === totalPages) {
       beforeCurrentPage = beforeCurrentPage - 2;
-    } else if (currentPage === totalPages - 1) {
+    } else if (page === totalPages - 1) {
       beforeCurrentPage = beforeCurrentPage - 1;
     }
-    if (currentPage === 1) {
+    if (page === 1) {
       afterCurrentPage = afterCurrentPage + 2;
-    } else if (currentPage === 2) {
+    } else if (page === 2) {
       afterCurrentPage = afterCurrentPage + 1;
     }
     for (
@@ -50,30 +47,28 @@ class PaginationBar extends Component {
       if (pageNum === 0) {
         pageNum = pageNum + 1;
       }
-      const pageNumber = this.createPageNumber(pageNum, currentPage);
+      const pageNumber = createPageNumber(pageNum, page);
       listLiTag.push(pageNumber);
     }
-    if (currentPage < totalPages - 1) {
-      if (currentPage < totalPages - 2) {
-        const dots = this.createPagingDot("dot-l");
+    if (page < totalPages - 1) {
+      if (page < totalPages - 2) {
+        const dots = createPagingDot("dot-l");
         listLiTag.push(dots);
       }
-      const pageNumber = this.createPageNumber(totalPages);
+      const pageNumber = createPageNumber(totalPages);
       listLiTag.push(pageNumber);
     }
-    if (currentPage < totalPages) {
-      const nextBtn = this.createPagingNextButton(currentPage);
+    if (page < totalPages) {
+      const nextBtn = createPagingNextButton(page);
       listLiTag.push(nextBtn);
     }
-    this.setState({
-      listLiTag,
-    });
+    setListLiTags(listLiTag);
   }
-  createPagingPrevButton(currentPage) {
+  function createPagingPrevButton(page) {
     const liTag = (
       <li
         key="prev"
-        onClick={() => this.pagingListMember(currentPage - 1)}
+        onClick={() => pagingListMember(page - 1)}
         className="page-btn prev"
       >
         <span>
@@ -84,11 +79,11 @@ class PaginationBar extends Component {
     );
     return liTag;
   }
-  createPagingNextButton(currentPage) {
+  function createPagingNextButton(page) {
     const liTag = (
       <li
         key="next"
-        onClick={() => this.pagingListMember(currentPage + 1)}
+        onClick={() => pagingListMember(page + 1)}
         className="page-btn next"
       >
         <span>
@@ -99,19 +94,19 @@ class PaginationBar extends Component {
     );
     return liTag;
   }
-  createPageNumber(num, currentPage) {
+  function createPageNumber(num, page) {
     const liTag = (
       <li
         key={num}
-        onClick={() => this.pagingListMember(num)}
-        className={currentPage === num ? "page-item is-active" : "page-item"}
+        onClick={() => pagingListMember(num)}
+        className={page === num ? "page-item is-active" : "page-item"}
       >
         <span> {num}</span>
       </li>
     );
     return liTag;
   }
-  createPagingDot(key) {
+  function createPagingDot(key) {
     const liTag = (
       <li key={key} className="page-item">
         <span>...</span>
@@ -119,14 +114,11 @@ class PaginationBar extends Component {
     );
     return liTag;
   }
-  render() {
-    const { listLiTag } = this.state;
-    return (
-      <div className="pagination-bar">
-        <ul className="page-list">{listLiTag}</ul>
-      </div>
-    );
-  }
+  return (
+    <div className="pagination-bar">
+      <ul className="page-list">{listLiTags}</ul>
+    </div>
+  );
 }
 
 export default PaginationBar;

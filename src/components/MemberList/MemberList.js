@@ -1,13 +1,10 @@
-import React, { Component } from "react";
-import { MembersContext } from "../../context/MembersContext";
+import React from "react";
 import MemberListItem from "../MemberListItem/MemberListItem";
 import "./MemberList.css";
-class MemberList extends Component {
-  render() {
-    const { listMembers } = this.props;
-    return (
-      <div className="list-wrapper">
-        <table className="list-members">
+function MemberList({ listMembers }) {
+  return (
+    <div className="list-wrapper">
+      <table className="list-members">
         <thead>
           <tr>
             <th>No.</th>
@@ -17,13 +14,16 @@ class MemberList extends Component {
           </tr>
         </thead>
         <tbody>
-          {listMembers.map((item,index) => (
-            <MemberListItem index={index} memberDetail={item} key={item.id} />
+          {listMembers.map((item, index) => (
+            <MemberListItem
+              index={index}
+              memberDetail={item}
+              key={item.id}
+            />
           ))}
         </tbody>
       </table>
-      </div>
-    );
-  }
+    </div>
+  );
 }
 export default MemberList;

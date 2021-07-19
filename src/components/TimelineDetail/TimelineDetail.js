@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, {  } from "react";
 import RollingDownMemberList from "../RollingDownMemberList/RollingDownMemberList";
 import "./TimelineDetail.css";
-class TimelineDetail extends Component {
-  render() {
-    const { isRight, members } = this.props;
+function TimelineDetail (props) {
+    const { isRight, members } = props;
     return (
       <div className={isRight ? "timeline-card left" : "timeline-card right"}>
         <div className="card-title">
@@ -18,7 +17,6 @@ class TimelineDetail extends Component {
           <RollingDownMemberList members={members}/>
       </div>
     );
-  }
 }
 
 export default TimelineDetail;
